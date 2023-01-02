@@ -25,15 +25,17 @@ import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.multipart.MultipartFile;
 
 import com.gun.board.repository.AuctionRepository;
+import com.gun.board.repository.BoardRepository;
 import com.gun.board.repository.CustomerRepository;
 import com.gun.board.repository.FriendRepository;
 import com.gun.board.repository.ReplyRepository;
 import com.gun.board.util.Configuration;
 import com.gun.board.util.FileService;
+import com.gun.board.util.Pagination;
 import com.gun.board.util.Pagination_Auction;
 import com.gun.board.vo.Auction;
+import com.gun.board.vo.Board;
 import com.gun.board.vo.Customer;
-import com.gun.board.vo.Free;
 import com.gun.board.vo.Reply;
 
 @RequestMapping(value = "/boards_auction")
@@ -50,6 +52,9 @@ public class AuctionController {
 
 	@Inject
 	ReplyRepository rRepository;
+	
+	@Inject
+	BoardRepository bRepository;
 
 	@Inject
 	CustomerRepository cRepository;
@@ -58,7 +63,62 @@ public class AuctionController {
 	FriendRepository fRepository;
 
 	Pagination_Auction Paginationa = new Pagination_Auction();
+	
+	
+//	@RequestMapping(value = "applicantRequest", method = RequestMethod.POST)//================작업중 =============
+//	public String applicant(int board_num) {
+//
+//		String loginid = (String) session.getAttribute("loginid");
+//		Auction auction = aRepository.insertApplicant(board_num, loginid);
+//
+//		return null;
+//	}
+	
+	@RequestMapping(value = "/applicantRequest", method = RequestMethod.POST)
+	public @ResponseBody String applicantRequest(int board_num, int count) {
 
+		String loginid = (String) session.getAttribute("loginid");
+		System.out.println("board_num : " + board_num + "신청자 : " + loginid + "신청자 수 : " + count);
+
+		int result = aRepository.applicant(loginid, board_num, count);
+		int numofFriendRequest = fRepository.numofFriendRequest(loginid);
+		session.setAttribute("numofFriendRequest", numofFriendRequest);
+		logger.info("친구 수락 결과 : " + numofFriendRequest);
+		return loginid;
+	}
+	
+	
+//	@RequestMapping(value = "/insert", method = RequestMethod.POST)
+//	public String insertBoard(Board board, MultipartFile upload, Model model) {
+//	System.out.println("upload 파일명: " + upload);
+//	String board_id = (String) session.getAttribute("loginid");
+//	String board_nickname = cRepository.selectNickname(board_id);
+//	board.setBoard_id(board_id);
+//	board.setBoard_nickname(board_nickname);
+//	bRepository.insertBoard(board);
+//	if (!upload.isEmpty()) {
+//	System.out.println("upload file's name: " + upload.getOriginalFilename());
+//	String board_uploadfileid = FileService.saveFile(upload, Configuration.PHOTOPATH);
+//	board.setBoard_fileid(upload.getOriginalFilename());
+//	board.setBoard_uploadfileid(board_uploadfileid);
+//	bRepository.insertPhoto(board);
+//	}
+//	String friend_id = (String) session.getAttribute("loginid");
+//	int page = 1;
+//	ArrayList<Board> boards = bRepository.getBoards(friend_id);
+//	int totalPages = Pagination.totalPages(boards);
+//	page = Pagination.getCurrentPage(page, totalPages);
+//	boards = Pagination.totalPosts(boards, page);
+//	int endPage = Pagination.endPage(page, totalPages);
+//	model.addAttribute("boards", boards);
+//	model.addAttribute("page", page);
+//	model.addAttribute("endPage", endPage);
+//	model.addAttribute("friend_id", friend_id);
+//	return "boards/home";
+//	}
+
+
+		
 	@RequestMapping(value = "", method = RequestMethod.GET)
 	public String getBoards(Model model, @RequestParam(value = "page", defaultValue = "1") int page,
 			@RequestParam(value = "friend_id", defaultValue = "") String friend_id) {
@@ -365,7 +425,8 @@ public class AuctionController {
 		model.addAttribute("friend_id", friend_id);
 		return "boards_auction/a_home";
 	}
-
+	
+	
 	@RequestMapping(value = "/friendRequest", method = RequestMethod.POST)
 	public String friendRequest(String friend_id, Model model,int board_num,
 			@RequestParam(value = "searchType", defaultValue = "") String searchType,

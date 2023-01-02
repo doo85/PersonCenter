@@ -63,6 +63,17 @@ public class Auction {
 	private String board_name_10;
 	private String board_price_10;
 	
+	public int getCount() {
+		return count;
+	}
+
+	public void setCount(int count) {
+		this.count = count;
+	}
+
+
+	private int count;
+	
 
 	
 	public String getBoard_cost() {
@@ -359,7 +370,7 @@ public class Auction {
 
 	@Override
 	public String toString() {
-		return "Board [board_num=" + board_num + ", board_title=" + board_title + ", board_content=" + board_content
+		return "Auction [board_num=" + board_num + ", board_title=" + board_title + ", board_content=" + board_content
 				+ ", board_date=" + board_date + ", board_id=" + board_id + ", board_hits=" + board_hits
 				+ ", board_nickname=" + board_nickname + ", board_replies=" + board_replies + ", board_see=" + board_see
 				+ ", board_fileid=" + board_fileid + ", board_uploadfileid=" + board_uploadfileid
@@ -371,7 +382,9 @@ public class Auction {
 				+ ", board_name_6=" + board_name_6 + ", board_price_6=" + board_price_6 + ", board_name_7="
 				+ board_name_7 + ", board_price_7=" + board_price_7 + ", board_name_8=" + board_name_8
 				+ ", board_price_8=" + board_price_8 + ", board_name_9=" + board_name_9 + ", board_price_9="
-				+ board_price_9 + ", board_name_10=" + board_name_10 + ", board_price_10=" + board_price_10
-				+ ", board_cost=" + board_cost + ", board_category=" + board_category + "]";
+				+ board_price_9 + ", board_name_10=" + board_name_10 + ", board_price_10=" + board_price_10 + ", count="
+				+ count + ", board_cost=" + board_cost + ", board_category=" + board_category + "]";
 	}
+
+
 }

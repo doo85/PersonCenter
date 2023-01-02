@@ -13,6 +13,8 @@ public interface AuctionDAO {
 
 	public ArrayList<Auction> getTransaction(int transaction_name) throws Exception;
 
+	public Auction insertApplicant(int board_num, String loginid) throws Exception;//작업중==============
+	
 	public int insertBoard(Auction auction) throws Exception;
 
 	public int insertPhoto(Auction auction) throws Exception;
@@ -40,4 +42,8 @@ public interface AuctionDAO {
 	public ArrayList<Auction> findauction(Map<String, String> search)throws Exception;
 	   
 	public ArrayList<Auction> getSort(Map sortNotice)throws Exception;
+
+	public int applicant(Map<String, Object> applicant)throws Exception;
+	
+	public int applicantcount(Map<String, Object> applicant)throws Exception;
 }

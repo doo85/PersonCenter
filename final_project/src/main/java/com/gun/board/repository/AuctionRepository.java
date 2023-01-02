@@ -10,9 +10,12 @@ import org.apache.ibatis.session.SqlSession;
 import org.springframework.stereotype.Repository;
 
 import com.gun.board.dao.AuctionDAO;
+import com.gun.board.dao.BoardDAO;
 import com.gun.board.dao.CustomerDAO;
 import com.gun.board.dao.FreeDAO;
+import com.gun.board.dao.FriendDAO;
 import com.gun.board.vo.Auction;
+import com.gun.board.vo.Board;
 import com.gun.board.vo.Free;
 
 @Repository
@@ -22,7 +25,11 @@ public class AuctionRepository {
 	private SqlSession sqlSession;
 
 	AuctionDAO adao;
+	
 
+	
+
+	
 	public int insertBoard(Auction auction) {
 		int result = 0;
 		adao = sqlSession.getMapper(AuctionDAO.class);
@@ -196,4 +203,24 @@ public class AuctionRepository {
 		      }
 		      return result;
 		   }
+
+
+	public int applicant(String loginid, int board_num,int count) {
+		adao = sqlSession.getMapper(AuctionDAO.class);
+		int result = 0;
+		Map<String, Object> applicant = new HashMap();
+		applicant.put("cus_id", loginid);
+		applicant.put("board_num", board_num);
+		applicant.put("count", count);
+		System.out.println(count);
+
+		try {
+			result = adao.applicant(applicant);
+			result = adao.applicantcount(applicant);
+		} catch (Exception e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		return result;
+	}
 }

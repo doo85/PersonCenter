@@ -15,6 +15,20 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 		)
 	</insert>
 
+	<update id="applicant" parameterType="Map">
+		update board_auction set
+		board_name_${count}=#{cus_id}
+		where
+		board_num=#{board_num}
+	</update>
+	
+	<update id="applicantcount" parameterType="Map">
+		update board_auction set
+		count=count+1
+		where
+		board_num=#{board_num}
+	</update>
+
 	<insert id="insertPhoto">
 		insert into board_file_auction(board_num,
 		board_fileid,board_uploadfileid)
@@ -23,6 +37,16 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 		board_auction),#{board_fileid},#{board_uploadfileid}
 		)
 	</insert>
+	
+	<insert id="insertApplicant"><!-- ===============작업중=============== -->
+		insert into board_auction(board_num,
+		board_fileid,board_uploadfileid)
+		values(
+		(select max(board_num) from
+		board_auction),#{board_fileid},#{board_uploadfileid}
+		)
+	</insert>
+	
 	
 	<!-- 게시글 조회 (수정) -->
 	<select id="getBoards" resultType="Auction" parameterType="Map">
